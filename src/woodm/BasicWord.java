@@ -57,11 +57,20 @@ public class BasicWord extends Word {
      */
     @Override
     public boolean equals(Object o) {
-        return false;
+        return o instanceof BasicWord && ((BasicWord)o).word.equals(this.word);
     }
 
+    /**
+     * Compares this object with the specified object for order.
+     * Returns a negative integer, zero, or a positive integer as this object is less than,
+     * equal to, or greater than the specified object.
+     * For this class, we are comparing the words stored in the two Word objects
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object is less than,
+     * equal to, or greater than the specified object.
+     */
     @Override
     public int compareTo(Word o) {
-        return 0;
+        return this.word.compareTo(o.word);
     }
 }
