@@ -1,15 +1,15 @@
 /*
  * Course: CSC-1110
  * Assignment: Text Processing
- * Name: // TODO: YOUR NAME HERE
+ * Name: Michael Wood
  */
 package tests;
 
-import username.BasicWord;
-import username.Bigram;
-import username.Driver;
-import username.VocabularyEntry;
-import username.Word;
+import woodm.BasicWord;
+import woodm.Bigram;
+import woodm.Driver;
+import woodm.VocabularyEntry;
+import woodm.Word;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

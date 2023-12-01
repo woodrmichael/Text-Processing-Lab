@@ -38,10 +38,8 @@ public class Bigram extends Word {
      */
     @Override
     public void addLocation(long location) throws IllegalArgumentException {
-        boolean flag;
         for (Long loc : this.locations) {
-            flag = loc == location;
-            if (flag || location < 0) {
+            if (loc == location || location < 0) {
                 throw new IllegalArgumentException();
             }
         }
