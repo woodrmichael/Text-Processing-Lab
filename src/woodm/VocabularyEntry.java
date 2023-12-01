@@ -24,6 +24,7 @@ public class VocabularyEntry extends Word {
     public VocabularyEntry(BasicWord basic) {
         super(basic.word);
         this.locations = new ArrayList<>();
+        this.addLocation(basic.getLocation());
     }
 
     public int getOccurrences() {
@@ -59,7 +60,7 @@ public class VocabularyEntry extends Word {
      */
     @Override
     public String toString() {
-        return this.word + "        " + this.occurrences;
+        return this.word + "              " + this.occurrences;
     }
 
     /**

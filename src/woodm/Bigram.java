@@ -27,6 +27,7 @@ public class Bigram extends Word {
         super(word1.word);
         this.word2 = word2.word;
         this.locations = new ArrayList<>();
+        this.addLocation(word1.getLocation());
     }
 
     /**
@@ -54,7 +55,7 @@ public class Bigram extends Word {
      */
     @Override
     public String toString() {
-        return this.word + "        " + this.word2 + "        " + this.occurrences;
+        return this.word + "           " + this.word2 + "            " + this.occurrences;
     }
 
     /**

@@ -5,6 +5,11 @@
  */
 package woodm;
 
+import java.util.Scanner;
+
+/**
+ * A Driver class for processing text from a file.
+ */
 public class Driver {
     private static final String DATA_FOLDER = "data";
 
@@ -38,6 +43,19 @@ public class Driver {
         // report the top entries for bigrams
 
     }
+
+    /**
+     * A helper method to get input from the user.
+     * @param in Scanner using System.in as input
+     * @param message the message with which to prompt the user
+     * @return the user input
+     */
+    private static String getInput(Scanner in, String message) {
+        System.out.println(message);
+        return in.nextLine();
+    }
+
+
 
     
 }
