@@ -110,11 +110,30 @@ public class Driver {
         return retStr.toString().toLowerCase();
     }
 
-
-
-
-
-
-
+    /**
+     * A helper method that generates Bigrams from the ordered List of BasicWords and
+     * stores the Bigrams in a List.
+     * There should only be one instance of each Bigram in the List.
+     * When successive copies of the same Bigram are found, the location should be added to the
+     * existing Bigram and the occurrence count should be incremented.
+     * @param bigrams the List in which to store the resulting Bigrams
+     * @param words the ordered List of BasicWord to use to generate the Bigrams
+     */
+    private static void addBigrams(List<Word> bigrams, List<BasicWord> words) {
+        boolean flag;
+        for(int i = 0; i < words.size() - 1; i++) {
+            flag = false;
+            Bigram tempBigram = new Bigram(words.get(i), words.get(i+1));
+            for(int j = 0; j < bigrams.size(); j++) {
+                if(tempBigram.equals(bigrams.get(j))) {
+                    bigrams.get(j).addLocation(words.get(i).getLocation());
+                    flag = true;
+                }
+            }
+            if(!flag) {
+                bigrams.add(tempBigram);
+            }
+        }
+    }
 
 }
