@@ -124,9 +124,9 @@ public class Driver {
         for(int i = 0; i < words.size() - 1; i++) {
             flag = false;
             Bigram tempBigram = new Bigram(words.get(i), words.get(i+1));
-            for(int j = 0; j < bigrams.size(); j++) {
-                if(tempBigram.equals(bigrams.get(j))) {
-                    bigrams.get(j).addLocation(words.get(i).getLocation());
+            for (Word bigram : bigrams) {
+                if (tempBigram.equals(bigram)) {
+                    bigram.addLocation(words.get(i).getLocation());
                     flag = true;
                 }
             }
@@ -136,4 +136,29 @@ public class Driver {
         }
     }
 
+    /**
+     * A helper method that generates VocabularyEntry objects from the ordered List of
+     * BasicWords and stores the entries in a List.
+     * There should only be one instance of each VocabularyEntry in the List.
+     * When successive copies of the same entry are found, the location should be added to the
+     * existing entry and the occurrence count should be incremented.
+     * @param vocabulary the List in which to store the resulting VocabularyEntry objects
+     * @param words the ordered List of BasicWord to use to generate the vocabulary
+     */
+    private static void addVocabulary(List<Word> vocabulary, List<BasicWord> words) {
+        boolean flag;
+        for (BasicWord word : words) {
+            flag = false;
+            VocabularyEntry tempVocab = new VocabularyEntry(word);
+            for (Word vocab : vocabulary) {
+                if (tempVocab.equals(vocab)) {
+                    vocab.addLocation(word.getLocation());
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                vocabulary.add(tempVocab);
+            }
+        }
+    }
 }
