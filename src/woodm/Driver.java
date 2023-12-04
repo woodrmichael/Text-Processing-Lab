@@ -20,6 +20,9 @@ public class Driver {
     private static final String DATA_FOLDER = "data";
 
     public static void main(String[] args) {
+        String fileName = "";
+        //Scanner read = new Scanner(Path.of(DATA_FOLDER + "\"" + fileName)) TRY WITH RESOURCES
+
         // Instantiate your collections and other variables here
 
         // ask user for file
@@ -182,6 +185,13 @@ public class Driver {
      * @param topHits the number of items to display in the report
      */
     private static void report(List<Word> list, String type, int topHits) {
-
+        System.out.println("Top " + topHits + " " + type + " are:");
+        int maxTopHits = topHits;
+        if(topHits > list.size()) {
+            maxTopHits = list.size();
+        }
+        for(int i = 0; i < maxTopHits; i++) {
+            System.out.printf("%d%25s%s", i + 1, list.get(i), System.lineSeparator());
+        }
     }
 }
