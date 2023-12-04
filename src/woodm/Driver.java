@@ -5,6 +5,7 @@
  */
 package woodm;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
@@ -66,21 +67,15 @@ public class Driver {
      * the header text has been removed, then will stop.
      * @param read Scanner using a Project Gutenberg text file as input
      */
-    private static void removeHeader(Scanner read) { // BROKEN
-        try (PrintWriter writer = new PrintWriter("test.txt")) {
-            ArrayList<String> list = new ArrayList<>();
-            read.nextLine();
-            while(read.hasNextLine()) {
-                list.add(read.nextLine());
-            }
-            //read.close();
-            for(int i = 0; i < list.size(); i++) {
-                writer.println(list.get(i));
-            }
-            writer.flush();
-        } catch (FileNotFoundException e) {
-            System.out.println("FILE NOT FOUND");
+    private static void removeHeader(Scanner read) {
+        String line = read.nextLine();
+        while(!line.startsWith("*** START OF THE PROJECT GUTENBERG EBOOK")) {
+            line = read.nextLine();
         }
+        while(line.isBlank()) {
+            line = read.nextLine();
+        }
+        read.nextLine();
     }
 
     /**
@@ -91,7 +86,18 @@ public class Driver {
      * @param read Scanner using a Project Gutenberg text file as input
      */
     private static void addWords(List<BasicWord> words, Scanner read) {
-
+        long location = 0;
+        String line = read.nextLine();
+        while(!line.startsWith("*** END OF THE PROJECT GUTENBERG EBOOK")) {
+            String[] strings = line.split(" ");
+            for (String word : strings) {
+                if (!normalize(word).isBlank()) {
+                    words.add(new BasicWord(normalize(word), location));
+                    location++;
+                }
+            }
+            line = read.nextLine();
+        }
     }
 
     /**
@@ -103,7 +109,7 @@ public class Driver {
     private static String normalize(String s) {
         StringBuilder retStr = new StringBuilder();
         for(int i = 0; i < s.length(); i++) {
-            if(Character.isLetter(s.charAt(i))) {
+            if(Character.isLetter(s.charAt(i)) || Character.isDigit(s.charAt(i))) {
                 retStr.append(s.charAt(i));
             }
         }
@@ -160,5 +166,28 @@ public class Driver {
                 vocabulary.add(tempVocab);
             }
         }
+    }
+
+    /**
+     * A helper method to save a List of Words as a text file
+     * @param list the List of Word objects to save
+     * @param output the File to save the data into
+     * @throws FileNotFoundException thrown if the File cannot be found
+     */
+    private static void saveFile(List<Word> list, File output) throws FileNotFoundException {
+
+    }
+
+    /**
+     * A helper method that generates a report of the most frequent entries from the given sorted
+     * List. If topHits is greater than the total number of entries in the list,
+     * it will print out the entire list
+     * @param list the List from which to generate the report
+     * @param type a String describing what the contents of the list are
+     *            (i.e. "Words", "Bigrams", etc.)
+     * @param topHits the number of items to display in the report
+     */
+    private static void report(List<Word> list, String type, int topHits) {
+
     }
 }
