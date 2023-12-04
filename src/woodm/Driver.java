@@ -107,13 +107,7 @@ public class Driver {
      * @return the normalized String
      */
     private static String normalize(String s) {
-        StringBuilder retStr = new StringBuilder();
-        for(int i = 0; i < s.length(); i++) {
-            if(Character.isLetter(s.charAt(i)) || Character.isDigit(s.charAt(i))) {
-                retStr.append(s.charAt(i));
-            }
-        }
-        return retStr.toString().toLowerCase();
+        return s.replaceAll("\\p{Punct}", "").toLowerCase();
     }
 
     /**
