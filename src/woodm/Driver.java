@@ -92,7 +92,7 @@ public class Driver {
             report(bigrams, "bigrams", topHits);
 
         } catch (FileNotFoundException e) {
-            System.out.println("Invalid text file");
+            System.out.println("Invalid text file. Please enter a file name with extension .txt");
         } catch (IOException e) {
             System.out.println("File could not be read or something else went wrong");
         }
