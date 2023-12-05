@@ -55,7 +55,7 @@ public class Bigram extends Word {
      */
     @Override
     public String toString() {
-        return String.format("%-16s%-19s%d", this.word, this.word2, this.occurrences);
+        return String.format("%-16s%-16s%4d", this.word, this.word2, this.occurrences);
     }
 
     /**

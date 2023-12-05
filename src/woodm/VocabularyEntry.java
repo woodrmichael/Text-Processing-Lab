@@ -60,7 +60,7 @@ public class VocabularyEntry extends Word {
      */
     @Override
     public String toString() {
-        return String.format("%-19s%d", this.word, this.occurrences);
+        return String.format("%-16s%4d", this.word, this.occurrences);
     }
 
     /**
