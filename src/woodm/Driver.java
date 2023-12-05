@@ -172,7 +172,13 @@ public class Driver {
      * @throws FileNotFoundException thrown if the File cannot be found
      */
     private static void saveFile(List<Word> list, File output) throws FileNotFoundException {
-
+        try (PrintWriter writer = new PrintWriter(output)) {
+            for(Word word : list) {
+                writer.println(word);
+            }
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException();
+        }
     }
 
     /**
