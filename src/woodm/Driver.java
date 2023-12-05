@@ -36,31 +36,40 @@ public class Driver {
         try (Scanner read = new Scanner(Path.of(
                 DATA_FOLDER + System.getProperty("file.separator") + fileName))) {
 
+            // trim heading out of file
             removeHeader(read);
 
+            // generate words and add to a list
             System.out.println("Getting the words...");
             addWords(words, read);
 
+            // generate bigrams from list
             System.out.println("Making bigrams...");
             addBigrams(bigrams, words);
 
+            // generate vocabulary from list
             System.out.println("Generating vocabulary...");
             addVocabulary(vocabularyEntries, words);
 
+            // sort the data
             System.out.println("Sorting lists...");
             Collections.sort(bigrams);
             Collections.reverse(bigrams);
             Collections.sort(vocabularyEntries);
             Collections.reverse(vocabularyEntries);
 
+            // Save vocabulary as a text file
             System.out.println("Saving vocabulary...");
             saveFile(vocabularyEntries,
                     new File(getInput(in, "Enter the vocabulary file to save: ")));
 
+            // Save bigrams as a text file
             System.out.println("Saving bigrams...");
             saveFile(bigrams, new File(getInput(in, "Enter the bigram file to save: ")));
 
+            // generate reports
             System.out.println("Generating reports...");
+            // Ask for how many top entries to show
             boolean flag;
             int topHits = 0;
             do {
@@ -75,38 +84,18 @@ public class Driver {
                     System.out.println("\nPlease enter a positive integer");
                 }
             } while(flag);
+
+            // report the top entries for vocabulary
             report(vocabularyEntries, "vocabulary", topHits);
+
+            // report the top entries for bigrams
             report(bigrams, "bigrams", topHits);
 
         } catch (FileNotFoundException e) {
             System.out.println("Invalid text file");
         } catch (IOException e) {
-            System.out.println("Something went wrong");
+            System.out.println("File could not be read or something else went wrong");
         }
-
-
-        // trim heading out of file
-
-        // generate words and add to a list
-
-        // generate bigrams from list
-      
-        // generate vocabulary from list
-
-        // sort the data
-
-        // Save vocabulary as a text file
-
-        // Save bigrams as a text file
-
-        // generate reports
-
-        // Ask for how many top entries to show
-
-        // report the top entries for vocabulary
-
-        // report the top entries for bigrams
-
     }
 
     /**
@@ -251,7 +240,7 @@ public class Driver {
         System.out.println("Top " + topHits + " " + type + " are:");
         int maxTopHits = Math.min(topHits, list.size());
         for(int i = 0; i < maxTopHits; i++) {
-            System.out.printf("%-5d%21s%s", i + 1, list.get(i), System.lineSeparator());
+            System.out.printf("%-6d%20s%s", i + 1, list.get(i), System.lineSeparator());
         }
     }
 }
