@@ -197,7 +197,7 @@ public class Driver {
             maxTopHits = list.size();
         }
         for(int i = 0; i < maxTopHits; i++) {
-            System.out.printf("%d%25s%s", i + 1, list.get(i), System.lineSeparator());
+            System.out.printf("%-5d%21s%s", i + 1, list.get(i), System.lineSeparator());
         }
     }
 }
