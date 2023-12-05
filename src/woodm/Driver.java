@@ -7,9 +7,11 @@ package woodm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,15 +22,69 @@ public class Driver {
     private static final String DATA_FOLDER = "data";
 
     public static void main(String[] args) {
-        String fileName = "";
-        //Scanner read = new Scanner(Path.of(DATA_FOLDER + "\"" + fileName)) TRY WITH RESOURCES
-
         // Instantiate your collections and other variables here
+        final List<BasicWord> words = new ArrayList<>();
+        final List<Word> bigrams = new ArrayList<>();
+        final List<Word> vocabularyEntries = new ArrayList<>();
+        Scanner in = new Scanner(System.in);
 
         // ask user for file
+        String fileName = getInput(in, "Enter the file to read: ");
+        System.out.println("Processing...");
 
         // read file into Scanner
-      
+        try (Scanner read = new Scanner(Path.of(
+                DATA_FOLDER + System.getProperty("file.separator") + fileName))) {
+
+            removeHeader(read);
+
+            System.out.println("Getting the words...");
+            addWords(words, read);
+
+            System.out.println("Making bigrams...");
+            addBigrams(bigrams, words);
+
+            System.out.println("Generating vocabulary...");
+            addVocabulary(vocabularyEntries, words);
+
+            System.out.println("Sorting lists...");
+            Collections.sort(bigrams);
+            Collections.reverse(bigrams);
+            Collections.sort(vocabularyEntries);
+            Collections.reverse(vocabularyEntries);
+
+            System.out.println("Saving vocabulary...");
+            saveFile(vocabularyEntries,
+                    new File(getInput(in, "Enter the vocabulary file to save: ")));
+
+            System.out.println("Saving bigrams...");
+            saveFile(bigrams, new File(getInput(in, "Enter the bigram file to save: ")));
+
+            System.out.println("Generating reports...");
+            boolean flag;
+            int topHits = 0;
+            do {
+                try {
+                    String numHits = getInput(in, "Enter the number of top entries to show: ");
+                    topHits = Integer.parseInt(numHits);
+                    flag = topHits <= 0;
+                } catch (NumberFormatException e) {
+                    flag = true;
+                }
+                if(flag) {
+                    System.out.println("\nPlease enter a positive integer");
+                }
+            } while(flag);
+            report(vocabularyEntries, "vocabulary", topHits);
+            report(bigrams, "bigrams", topHits);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Invalid text file");
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+
+
         // trim heading out of file
 
         // generate words and add to a list
@@ -60,7 +116,7 @@ public class Driver {
      * @return the user input
      */
     private static String getInput(Scanner in, String message) {
-        System.out.println(message);
+        System.out.print(message);
         return in.nextLine();
     }
 
@@ -92,7 +148,7 @@ public class Driver {
         long location = 0;
         String line = read.nextLine();
         while(!line.startsWith("*** END OF THE PROJECT GUTENBERG EBOOK")) {
-            String[] strings = line.split(" ");
+            String[] strings = line.split("\\s+");
             for (String word : strings) {
                 if (!normalize(word).isBlank()) {
                     words.add(new BasicWord(normalize(word), location));
@@ -172,12 +228,13 @@ public class Driver {
      * @throws FileNotFoundException thrown if the File cannot be found
      */
     private static void saveFile(List<Word> list, File output) throws FileNotFoundException {
+        if(output.getPath().isBlank() || !output.getPath().endsWith(".txt")) {
+            throw new FileNotFoundException();
+        }
         try (PrintWriter writer = new PrintWriter(output)) {
             for(Word word : list) {
                 writer.println(word);
             }
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException();
         }
     }
 
@@ -192,10 +249,7 @@ public class Driver {
      */
     private static void report(List<Word> list, String type, int topHits) {
         System.out.println("Top " + topHits + " " + type + " are:");
-        int maxTopHits = topHits;
-        if(topHits > list.size()) {
-            maxTopHits = list.size();
-        }
+        int maxTopHits = Math.min(topHits, list.size());
         for(int i = 0; i < maxTopHits; i++) {
             System.out.printf("%-5d%21s%s", i + 1, list.get(i), System.lineSeparator());
         }
