@@ -1,0 +1,11 @@
+a               test               2
+this            is                 2
+hello           hello              2
+only            a                  1
+is              only               1
+3000            this               1
+nlp             3000               1
+of              nlp                1
+test            of                 1
+is              a                  1
+hello           this               1
