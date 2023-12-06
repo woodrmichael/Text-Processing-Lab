@@ -260,9 +260,14 @@ public class Driver {
         getElapsedTime(startTime, System.currentTimeMillis());
     }
 
-    private static void getElapsedTime(long starTime, long endTime) {
+    /**
+     * A helper method used to display the total amount of time that each method takes to complete.
+     * @param startTime the time in ms that the method begins.
+     * @param endTime the time in ms that the method ends.
+     */
+    private static void getElapsedTime(long startTime, long endTime) {
         final double msPerSecond = 1000;
-        long duration = endTime - starTime;
+        long duration = endTime - startTime;
         System.out.print("Time Elapsed: " + duration + " ms");
         if(duration >= msPerSecond) {
             System.out.print(" (" + duration / msPerSecond + " s)");
