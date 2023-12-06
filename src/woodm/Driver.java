@@ -53,10 +53,12 @@ public class Driver {
 
             // sort the data
             System.out.println("Sorting lists...");
+            long startTime = System.currentTimeMillis();
             Collections.sort(bigrams);
             Collections.reverse(bigrams);
             Collections.sort(vocabularyEntries);
             Collections.reverse(vocabularyEntries);
+            getElapsedTime(startTime, System.currentTimeMillis());
 
             // Save vocabulary as a text file
             System.out.println("Saving vocabulary...");
@@ -116,6 +118,7 @@ public class Driver {
      * @param read Scanner using a Project Gutenberg text file as input
      */
     private static void removeHeader(Scanner read) {
+        long startTime = System.currentTimeMillis();
         String line = read.nextLine();
         while(!line.startsWith("*** START OF THE PROJECT GUTENBERG EBOOK")) {
             line = read.nextLine();
@@ -124,6 +127,7 @@ public class Driver {
             line = read.nextLine();
         }
         read.nextLine();
+        getElapsedTime(startTime, System.currentTimeMillis());
     }
 
     /**
@@ -134,6 +138,7 @@ public class Driver {
      * @param read Scanner using a Project Gutenberg text file as input
      */
     private static void addWords(List<BasicWord> words, Scanner read) {
+        long startTime = System.currentTimeMillis();
         long location = 0;
         String line = read.nextLine();
         while(!line.startsWith("*** END OF THE PROJECT GUTENBERG EBOOK")) {
@@ -146,6 +151,7 @@ public class Driver {
             }
             line = read.nextLine();
         }
+        getElapsedTime(startTime, System.currentTimeMillis());
     }
 
     /**
@@ -155,7 +161,7 @@ public class Driver {
      * @return the normalized String
      */
     private static String normalize(String s) {
-        return s.replaceAll("\\p{Punct}", "").toLowerCase();
+        return s.replaceAll("[\\p{Punct}“”]", "").toLowerCase();
     }
 
     /**
@@ -168,6 +174,7 @@ public class Driver {
      * @param words the ordered List of BasicWord to use to generate the Bigrams
      */
     private static void addBigrams(List<Word> bigrams, List<BasicWord> words) {
+        long startTime = System.currentTimeMillis();
         boolean flag;
         for(int i = 0; i < words.size() - 1; i++) {
             flag = false;
@@ -176,12 +183,14 @@ public class Driver {
                 if (tempBigram.equals(bigram)) {
                     bigram.addLocation(words.get(i).getLocation());
                     flag = true;
+                    break;
                 }
             }
             if(!flag) {
                 bigrams.add(tempBigram);
             }
         }
+        getElapsedTime(startTime, System.currentTimeMillis());
     }
 
     /**
@@ -194,6 +203,7 @@ public class Driver {
      * @param words the ordered List of BasicWord to use to generate the vocabulary
      */
     private static void addVocabulary(List<Word> vocabulary, List<BasicWord> words) {
+        long startTime = System.currentTimeMillis();
         boolean flag;
         for (BasicWord word : words) {
             flag = false;
@@ -202,12 +212,14 @@ public class Driver {
                 if (tempVocab.equals(vocab)) {
                     vocab.addLocation(word.getLocation());
                     flag = true;
+                    break;
                 }
             }
             if (!flag) {
                 vocabulary.add(tempVocab);
             }
         }
+        getElapsedTime(startTime, System.currentTimeMillis());
     }
 
     /**
@@ -217,6 +229,7 @@ public class Driver {
      * @throws FileNotFoundException thrown if the File cannot be found
      */
     private static void saveFile(List<Word> list, File output) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
         if(output.getPath().isBlank() || !output.getPath().endsWith(".txt")) {
             throw new FileNotFoundException();
         }
@@ -225,6 +238,7 @@ public class Driver {
                 writer.println(word);
             }
         }
+        getElapsedTime(startTime, System.currentTimeMillis());
     }
 
     /**
@@ -237,10 +251,22 @@ public class Driver {
      * @param topHits the number of items to display in the report
      */
     private static void report(List<Word> list, String type, int topHits) {
+        long startTime = System.currentTimeMillis();
         System.out.println("Top " + topHits + " " + type + " are:");
         int maxTopHits = Math.min(topHits, list.size());
         for(int i = 0; i < maxTopHits; i++) {
             System.out.printf("%-6d%20s%s", i + 1, list.get(i), System.lineSeparator());
         }
+        getElapsedTime(startTime, System.currentTimeMillis());
+    }
+
+    private static void getElapsedTime(long starTime, long endTime) {
+        final double msPerSecond = 1000;
+        long duration = endTime - starTime;
+        System.out.print("Time Elapsed: " + duration + " ms");
+        if(duration >= msPerSecond) {
+            System.out.print(" (" + duration / msPerSecond + " s)");
+        }
+        System.out.println();
     }
 }
