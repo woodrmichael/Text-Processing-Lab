@@ -83,7 +83,7 @@ public class Driver {
                     flag = true;
                 }
                 if(flag) {
-                    System.out.println("\nPlease enter a positive integer");
+                    System.out.println("Please enter a positive integer");
                 }
             } while(flag);
 
